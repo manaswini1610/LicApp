@@ -1,0 +1,58 @@
+@import 'antd/dist/reset.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 12% 14%, #dbe7ff 0%, transparent 35%),
+    radial-gradient(circle at 88% 0%, #e4fbf5 0%, transparent 32%),
+    linear-gradient(180deg, #f7f9ff 0%, #eef3ff 100%);
+  color: #0f172a;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.page-shell {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.hero-card {
+  border: 1px solid #dbe5ff;
+  background: linear-gradient(135deg, #ffffff 0%, #f2f6ff 100%);
+  box-shadow: 0 14px 30px rgba(58, 99, 243, 0.08);
+}
+
+.surface-card {
+  border: 1px solid #e4eaf8;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.surface-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.09);
+}
+
+.page-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .page-shell {
+    width: 100%;
+  }
+}
