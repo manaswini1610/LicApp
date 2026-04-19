@@ -31,15 +31,22 @@ const policyTermOptions = [
   { label: "Half Yearly", value: "half_yearly" },
   { label: "Yearly", value: "yearly" },
 ];
-const policyTypeOptions = Object.entries(PLANS_BY_CATEGORY).map(([category, plans]) => ({
-  label: category,
-  options: plans.map((plan) => ({ label: plan, value: plan })),
-}));
+const policyTypeOptions = Object.entries(PLANS_BY_CATEGORY).map(
+  ([category, plans]) => ({
+    label: category,
+    options: plans.map((plan) => ({ label: plan, value: plan })),
+  }),
+);
 
 function policyToCardItem(p, index) {
   const id = p._id ?? p.id ?? `idx-${index}`;
   const premium = Number(
-    p.premium ?? p.policyPremium ?? p.policyAmount ?? p.premiumAmount ?? p.amount ?? 0,
+    p.premium ??
+      p.policyPremium ??
+      p.policyAmount ??
+      p.premiumAmount ??
+      p.amount ??
+      0,
   );
   return {
     key: String(id),
@@ -49,7 +56,8 @@ function policyToCardItem(p, index) {
     policyType: String(p.policyType ?? "—"),
     premium: Number.isFinite(premium) ? premium : 0,
     status: p.status ?? "pending",
-    nextFollowUpDate: p.nextFollowUpDate ?? p.followUpDate ?? p.followupDate ?? null,
+    nextFollowUpDate:
+      p.nextFollowUpDate ?? p.followUpDate ?? p.followupDate ?? null,
     notes: p.notes ?? p.followUpDetails ?? p.details ?? "",
   };
 }
@@ -70,7 +78,14 @@ export default function PolicyLeadsPage() {
 
   useEffect(() => {
     let cancelled = false;
-    getPolicies(LIST_PAGE, LIST_LIMIT, SORT_BY, SORT_ORDER, activeRange, "pending")
+    getPolicies(
+      LIST_PAGE,
+      LIST_LIMIT,
+      SORT_BY,
+      SORT_ORDER,
+      activeRange,
+      "pending",
+    )
       .then(() => {
         if (!cancelled) setLoadError(null);
       })
@@ -100,7 +115,9 @@ export default function PolicyLeadsPage() {
   }, [policies, search]);
   const policyById = useMemo(() => {
     const items = policies?.items ?? [];
-    return new Map(items.map((item) => [String(item?._id ?? item?.id ?? ""), item]));
+    return new Map(
+      items.map((item) => [String(item?._id ?? item?.id ?? ""), item]),
+    );
   }, [policies]);
 
   function handleEdit(id) {
@@ -126,7 +143,8 @@ export default function PolicyLeadsPage() {
   async function updateLeadById(id, overridePayload) {
     const current = policyById.get(String(id));
     const payload = {
-      customerName: current?.customerName ?? current?.clientName ?? current?.name ?? "",
+      customerName:
+        current?.customerName ?? current?.clientName ?? current?.name ?? "",
       customerPhone: current?.customerPhone ?? current?.phone ?? "",
       customerEmail: current?.customerEmail ?? current?.email ?? "",
       policyType: current?.policyType ?? "",
@@ -158,9 +176,18 @@ export default function PolicyLeadsPage() {
           : undefined,
       });
       message.success("Follow up updated");
-      await getPolicies(LIST_PAGE, LIST_LIMIT, SORT_BY, SORT_ORDER, activeRange, "pending");
+      await getPolicies(
+        LIST_PAGE,
+        LIST_LIMIT,
+        SORT_BY,
+        SORT_ORDER,
+        activeRange,
+        "pending",
+      );
     } catch (err) {
-      message.error(err?.response?.data?.message ?? "Could not update follow up");
+      message.error(
+        err?.response?.data?.message ?? "Could not update follow up",
+      );
     } finally {
       setActionPolicyId(null);
     }
@@ -201,7 +228,14 @@ export default function PolicyLeadsPage() {
         policyTerm: values?.policyTerm,
       });
       closeConvertModal();
-      await getPolicies(LIST_PAGE, LIST_LIMIT, SORT_BY, SORT_ORDER, activeRange, "pending");
+      await getPolicies(
+        LIST_PAGE,
+        LIST_LIMIT,
+        SORT_BY,
+        SORT_ORDER,
+        activeRange,
+        "pending",
+      );
       setShowCelebration(true);
       window.setTimeout(() => {
         setShowCelebration(false);
@@ -222,19 +256,29 @@ export default function PolicyLeadsPage() {
         className="hero-card"
         title={
           <Space style={{ width: "100%", justifyContent: "space-between" }}>
-            <Typography.Title level={4} className="page-title" style={{ margin: 0 }}>
+            <Typography.Title
+              level={4}
+              className="page-title"
+              style={{ margin: 0 }}
+            >
               Policy Leads
             </Typography.Title>
             <Button
               type="primary"
-              onClick={() => navigate("/add-policy", { state: { returnTo: "/policy-leads" } })}
+              onClick={() =>
+                navigate("/add-policy", {
+                  state: { returnTo: "/policy-leads" },
+                })
+              }
             >
               Add Policy
             </Button>
           </Space>
         }
       >
-        {loadError ? <Typography.Text type="danger">{loadError}</Typography.Text> : null}
+        {loadError ? (
+          <Typography.Text type="danger">{loadError}</Typography.Text>
+        ) : null}
         <Space
           direction="vertical"
           size={12}
@@ -256,7 +300,9 @@ export default function PolicyLeadsPage() {
         </Space>
         <Spin spinning={loading}>
           {!loading && data.length === 0 ? (
-            <Typography.Text type="secondary">No policy leads found.</Typography.Text>
+            <Typography.Text type="secondary">
+              No policy leads found.
+            </Typography.Text>
           ) : null}
           {!loading && data.length > 0 ? (
             <Row gutter={[16, 16]}>
@@ -288,7 +334,11 @@ export default function PolicyLeadsPage() {
           centered
           destroyOnClose
         >
-          <Form form={convertForm} layout="vertical" onFinish={submitConvertToClient}>
+          <Form
+            form={convertForm}
+            layout="vertical"
+            onFinish={submitConvertToClient}
+          >
             <Form.Item
               label="Policy Type"
               name="policyType"
@@ -305,7 +355,9 @@ export default function PolicyLeadsPage() {
             <Form.Item
               label="Premium"
               name="premiumAmount"
-              rules={[{ required: true, message: "Please enter premium amount" }]}
+              rules={[
+                { required: true, message: "Please enter premium amount" },
+              ]}
             >
               <InputNumber
                 style={{ width: "100%" }}
@@ -319,7 +371,10 @@ export default function PolicyLeadsPage() {
               name="policyTerm"
               rules={[{ required: true, message: "Please select policy term" }]}
             >
-              <Select placeholder="Select policy term" options={policyTermOptions} />
+              <Select
+                placeholder="Select policy term"
+                options={policyTermOptions}
+              />
             </Form.Item>
           </Form>
         </Modal>
@@ -367,11 +422,17 @@ export default function PolicyLeadsPage() {
           >
             <Typography.Title
               level={2}
-              style={{ margin: 0, fontSize: "clamp(24px, 5vw, 36px)", color: "#b4237a" }}
+              style={{
+                margin: 0,
+                fontSize: "clamp(24px, 5vw, 36px)",
+                color: "#b4237a",
+              }}
             >
               Congratulations!
             </Typography.Title>
-            <Typography.Paragraph style={{ marginTop: 10, marginBottom: 0, color: "#5f2a4a" }}>
+            <Typography.Paragraph
+              style={{ marginTop: 10, marginBottom: 0, color: "#5f2a4a" }}
+            >
               New policy client added successfully.
             </Typography.Paragraph>
           </Card>

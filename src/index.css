@@ -46,6 +46,50 @@ body {
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.09);
 }
 
+/* Dashboard KPI strip: soft white tiles, label + large value */
+.dashboard-kpi-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 22px 24px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  min-height: 100%;
+  text-align: left;
+}
+
+.dashboard-kpi-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+
+.dashboard-kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 768px) {
+  .dashboard-kpi-card {
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+
+  .dashboard-kpi-label {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .dashboard-kpi-value {
+    font-size: 22px;
+  }
+}
+
 .page-title {
   margin: 0;
   font-weight: 700;
